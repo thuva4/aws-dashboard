@@ -18,20 +18,79 @@ class App extends Component {
     }
   }
 
-  componentWillMount(){
-    let that = this;
-    this.state.cw.getDashboard({"DashboardName": "gg"}, function(err, data) {
-      if (err) {
-        console.log("Error", err);
-      } else {
-        console.log(data.DashboardBody)
-        let dataJson = JSON.parse(data.DashboardBody)
-        that.setState({
-          dashBoardData: dataJson.widgets
-      });
-      }
-    } );
+  setTempCredentials = (tempCredentials) => {
+    this.setState({
+      ...this.state,
+      cw: new AWS.CloudWatch({credentials:tempCredentials})
+    })
   }
+
+
+  componentWillMount(){
+
+    fetch("http://169.254.169.254/latest/meta-data/iam/info")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ hits: data.hits, isLoading: false })
+      });
+    // let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+    // let roleArn = `arn:aws:iam::${accountId}:role/${role}`;
+    // console.log("Assuming role: "+roleArn);
+
+    // let sts = new AWS.STS() ;
+    // sts.assumeRole({RoleArn: roleArn, RoleSessionName: 'SnapshotGraphs'}, function(err, data) {
+    //     if (err) console.log(err, err.stack); // an error occurred
+    //     else {           // successful response
+    //         console.log(JSON.stringify(data))
+    //         let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
+    //                                                   data.Credentials.SecretAccessKey, 
+    //                                                   data.Credentials.SessionToken)
+    //         this.setTempCredentials(tempCredentials);
+    //     }
+    // });
+  }
+
+
+
+  getWidget = (widgetDefinition, callback, tempCredentials) => {
+    
+    let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+
+     cloudWatch.getMetricWidgetImage(widgetDefinition, function (err, data) {
+     if (err) console.log(err, err.stack); // an error occurred
+        else {
+            console.log(data.MetricWidgetImage);           // successful response
+            var response = {
+                statusCode: 200,
+                headers: {
+                'Content-Type' : 'image/png',
+                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Methods' : 'POST, GET, PUT, OPTIONS',
+                'Access-Control-Allow-Headers' : 'x-api-key'
+                },
+                body: new Buffer(data.MetricWidgetImage).toString('base64')
+    };
+            callback(err, response);
+        }
+    });
+
+}
+
+  // componentWillMount(){
+  //   let that = this;
+  //   this.state.cw.getDashboard({"DashboardName": "gg"}, function(err, data) {
+  //     if (err) {
+  //       console.log("Error", err);
+  //     } else {
+  //       console.log(data.DashboardBody)
+  //       let dataJson = JSON.parse(data.DashboardBody)
+  //       that.setState({
+  //         dashBoardData: dataJson.widgets
+  //     });
+  //     }
+  //   } );
+  // }
 
 
 
