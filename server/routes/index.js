@@ -7,7 +7,6 @@ AWS.config.update({'region': 'us-east-1'})
 const axios = require('axios');
 const fs = require('fs');
 
-/* GET home page. */
 router.get('/createtempCredentials', function(req, res, next) {
         let roleArn = `arn:aws:iam::315465781430:role/Application-CDE-MSD-DevOps-Role`;
         console.log("Assuming role: "+roleArn);
@@ -31,20 +30,20 @@ router.get('/gettempCredentials', function(req, res, next){
         else {
             data = JSON.parse(data)
             res.send(data.Credentials)
-            // let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
-            //     data.Credentials.SecretAccessKey, 
-            //     data.Credentials.SessionToken)
-            // let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
-            // cloudWatch.getDashboard({"DashboardName": "Platform-Email-Service"}, function(err, data) {
-            //     if (err) {
-            //       console.log("Error", err);
-            //     } else {
-            //       console.log(data.DashboardBody)
-            //       let dataJson = JSON.parse(data.DashboardBody)
-            //       console.log(dataJson)
-            //       res.send(dataJson)
-            //     }
-            //   } );
+            let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
+                data.Credentials.SecretAccessKey, 
+                data.Credentials.SessionToken)
+            let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+            cloudWatch.ListDashboards({}, function(err, data) {
+                if (err) {
+                  console.log("Error", err);
+                } else {
+                  console.log(data.DashboardBody)
+                  let dataJson = JSON.parse(data.DashboardBody)
+                  console.log(dataJson)
+                  res.send(dataJson)
+                }
+              } );
         }
     })
 })
