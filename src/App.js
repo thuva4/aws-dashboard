@@ -33,7 +33,7 @@ class App extends Component {
       .then(data => {
         console.log(data)
         this.setState({ InstanceProfileArn: data.InstanceProfileArn, isLoading: false })
-        let roleArn = `arn:aws:iam::${accountId}:role/${role}`;
+        let roleArn = `${data.InstanceProfileArn}`;
         console.log("Assuming role: "+roleArn);
 
         let sts = new AWS.STS() ;
