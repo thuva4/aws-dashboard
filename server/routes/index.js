@@ -7,6 +7,13 @@ let AWS = require('aws-sdk');
 
 /* GET home page. */
 router.get('/tempCredentials', function(req, res, next) {
+    fetch("http://169.254.169.254/latest/meta-data/iam/info")
+      .then(response => {
+        console.log(response)
+        response.json()})
+      .then(data => {
+        console.log(data);
+    })
         let roleArn = `arn:aws:iam::315465781430:instance-profile/Application-CDE-MSD-DevOps-Role`;
         console.log("Assuming role: "+roleArn);
 
