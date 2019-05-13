@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-let AWS_CONFIG  = require('./env');
+// let AWS_CONFIG  = require('./env');
 let AWS = require('aws-sdk');
-AWS.config.update(AWS_CONFIG); 
+ 
 
 /* GET home page. */
 router.get('/tempCredentials', function(req, res, next) {
