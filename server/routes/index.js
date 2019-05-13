@@ -29,7 +29,7 @@ router.get('/createtempCredentials', function(req, res, next) {
     });
 });
 
-router.get('/createtempCredentials', function(req, res, next){
+router.get('/gettempCredentials', function(req, res, next){
     fs.readFile('./credencials.json', function(err, data){
         if (err) res.status(500).send(err)
         else {
