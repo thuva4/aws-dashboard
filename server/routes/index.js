@@ -17,7 +17,7 @@ router.get('/tempCredentials', function(req, res, next) {
 
         let sts = new AWS.STS() ;
         sts.assumeRole({RoleArn: roleArn, RoleSessionName: 'SnapshotGraphs'}, function(err, data) {
-            if (err) res.status(500).send(err.stack); // an error occurred
+            if (err) res.status(500).send(err); // an error occurred
             else {           // successful response
                 console.log(JSON.stringify(data))
                 let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
