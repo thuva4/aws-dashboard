@@ -8,7 +8,7 @@ const axios = require('axios');
 /* GET home page. */
 router.get('/tempCredentials', function(req, res, next) {
     axios.get("http://169.254.169.254/latest/meta-data/iam/info")
-      .then(response => response.json())
+      .then(response => response.data)
       .then(data => {
         console.log(data);
     })
