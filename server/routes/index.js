@@ -34,6 +34,8 @@ router.get('/tempCredentials', function(req, res, next) {
 
 router.get('/getdashboard', function(req, res, next){
     fs.readFile('./credencials.json', function(err, data){
+        data = JSON.parse(data)
+        console.log(data)
         let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
             data.Credentials.SecretAccessKey, 
             data.Credentials.SessionToken)
