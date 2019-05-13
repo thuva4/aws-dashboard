@@ -34,7 +34,7 @@ router.get('/gettempCredentials', function(req, res, next){
                 data.Credentials.SecretAccessKey, 
                 data.Credentials.SessionToken)
             let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
-            cloudWatch.ListDashboards({}, function(err, data) {
+            cloudWatch.listDashboards({}, function(err, data) {
                 if (err) {
                   console.log("Error", err);
                 } else {
