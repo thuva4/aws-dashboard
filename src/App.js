@@ -29,7 +29,9 @@ class App extends Component {
   componentWillMount(){
     console.log("Hello")
     fetch("http://169.254.169.254/latest/meta-data/iam/info")
-      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        response.json()})
       .then(data => {
         console.log(data)
         this.setState({ InstanceProfileArn: data.InstanceProfileArn, isLoading: false })
