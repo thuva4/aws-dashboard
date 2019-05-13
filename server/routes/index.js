@@ -4,6 +4,7 @@ var router = express.Router();
 // let AWS_CONFIG  = require('./env');
 let AWS = require('aws-sdk');
 const axios = require('axios');
+const fs = require('fs');
 
 /* GET home page. */
 router.get('/tempCredentials', function(req, res, next) {
@@ -23,6 +24,7 @@ router.get('/tempCredentials', function(req, res, next) {
                 let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
                                                           data.Credentials.SecretAccessKey, 
                                                           data.Credentials.SessionToken)
+                console.log(tempCredentials)
                 res.send({Credentials: tempCredentials});
             }
         });
