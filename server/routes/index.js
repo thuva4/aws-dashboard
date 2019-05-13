@@ -38,8 +38,10 @@ router.get('/gettempCredentials', function(req, res, next){
                 if (err) {
                   console.log("Error", err);
                 } else {
-                  console.log(data)
-                  let dataJson = JSON.parse(data)
+                  console.log(data.DashboardEntries)
+                  let dataJson = {
+                    DashboardEntries:JSON.parse(data).DashboardEntries
+                  }
                   console.log(dataJson)
                   res.send(dataJson)
                 }
