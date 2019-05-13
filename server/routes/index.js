@@ -3,11 +3,11 @@ var router = express.Router();
 
 // let AWS_CONFIG  = require('./env');
 let AWS = require('aws-sdk');
- 
+const axios = require('axios');
 
 /* GET home page. */
 router.get('/tempCredentials', function(req, res, next) {
-    fetch("http://169.254.169.254/latest/meta-data/iam/info")
+    axios.get("http://169.254.169.254/latest/meta-data/iam/info")
       .then(response => {
         console.log(response)
         response.json()})
