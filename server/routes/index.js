@@ -12,7 +12,7 @@ router.get('/tempCredentials', function(req, res, next) {
       .then(data => {
         console.log(data);
     })
-        let roleArn = `arn:aws:iam::315465781430:instance-profile/Application-CDE-MSD-DevOps-Role`;
+        let roleArn = `arn:aws:iam::315465781430:role/Application-CDE-MSD-DevOps-Role`;
         console.log("Assuming role: "+roleArn);
 
         let sts = new AWS.STS() ;
