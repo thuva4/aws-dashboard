@@ -21,7 +21,13 @@ router.get('/tempCredentials', function(req, res, next) {
             if (err) res.status(500).send(err); // an error occurred
             else {           // successful response
                 console.log(JSON.stringify(data))
-                fs.writeFile('./credencials.json', JSON.stringify(data))
+                fs.writeFile('./credencials.json', JSON.stringify(data), function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                
+                    console.log("The file was saved!");
+                }); 
             }
         });
 });
