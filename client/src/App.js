@@ -27,15 +27,15 @@ class App extends Component {
 
 
   componentWillMount(){
-    console.log("Hello")
-    fetch("http://169.254.169.254/latest/meta-data/iam/info")
-      .then(response => {
-        console.log(response)
-        response.json()})
-      .then(data => {
-        console.log(data)
-        this.setState({ InstanceProfileArn: data.InstanceProfileArn, isLoading: false })
-        let roleArn = `${data.InstanceProfileArn}`;
+    // console.log("Hello")
+    // fetch("http://169.254.169.254/latest/meta-data/iam/info")
+    //   .then(response => {
+    //     console.log(response)
+    //     response.json()})
+    //   .then(data => {
+    //     console.log(data)
+    //     this.setState({ InstanceProfileArn: data.InstanceProfileArn, isLoading: false })
+        let roleArn = `arn:aws:iam::315465781430:instance-profile/Application-CDE-MSD-DevOps-Role`;
         console.log("Assuming role: "+roleArn);
 
         let sts = new AWS.STS() ;
@@ -50,7 +50,7 @@ class App extends Component {
             }
         });
 
-      });
+      // });
     // let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
     // let roleArn = `arn:aws:iam::${accountId}:role/${role}`;
     // console.log("Assuming role: "+roleArn);
