@@ -21,14 +21,28 @@ router.get('/tempCredentials', function(req, res, next) {
             if (err) res.status(500).send(err); // an error occurred
             else {           // successful response
                 console.log(JSON.stringify(data))
-                let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
-                                                          data.Credentials.SecretAccessKey, 
-                                                          data.Credentials.SessionToken)
-                console.log(tempCredentials)
-                res.send({Credentials: tempCredentials});
+                fs.writeFile('./credencials.json', JSON.stringify(data))
             }
         });
-
 });
+
+router.get('/getdashboard', function(req, res, next){
+    fs.readFile('./credencials.json', function(err, data){
+        let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
+            data.Credentials.SecretAccessKey, 
+            data.Credentials.SessionToken)
+        let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+        cloudWatch.getDashboard({"DashboardName": "Platform-Email-Service"}, function(err, data) {
+            if (err) {
+              console.log("Error", err);
+            } else {
+              console.log(data.DashboardBody)
+              let dataJson = JSON.parse(data.DashboardBody)
+              console.log(dataJson)
+              res.send(dataJson)
+            }
+          } );
+    })
+})
 
 module.exports = router;
