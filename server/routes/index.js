@@ -9,11 +9,6 @@ const fs = require('fs');
 
 /* GET home page. */
 router.get('/createtempCredentials', function(req, res, next) {
-    axios.get("http://169.254.169.254/latest/meta-data/iam/info")
-      .then(response => response.data)
-      .then(data => {
-        console.log(data);
-    })
         let roleArn = `arn:aws:iam::315465781430:role/Application-CDE-MSD-DevOps-Role`;
         console.log("Assuming role: "+roleArn);
         let sts = new AWS.STS() ;
@@ -22,9 +17,10 @@ router.get('/createtempCredentials', function(req, res, next) {
             else {           // successful response
                 fs.writeFile('./credencials.json', JSON.stringify(data), function(err) {
                     if(err) {
-                        return console.log(err);
+                        return res.status(500).send(err);
                     }
                 }); 
+                res.send(data.Credentials);
             }
     });
 });
