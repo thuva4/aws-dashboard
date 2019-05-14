@@ -13,7 +13,7 @@ class Widget extends Component {
         
     }
     componentWillMount(){
-        await this.callAwsCloudWatch()
+        this.callAwsCloudWatch()
     }
 
 
