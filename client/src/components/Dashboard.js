@@ -18,11 +18,8 @@ class Dashboard extends Component {
     }
 
     callAwsCloudWatch = async () => {
-      let params =_.cloneDeep(this.props.params);
-      let MetricWidget = JSON.stringify(this.props.params.MetricWidget);
-      params.MetricWidget = MetricWidget;
       let that = this;
-      fetch(`localhost:3001/getdashboard?dashboardName=${this.params.name}`)
+      fetch(`http://10.133.26.118:3001/getdashboard?dashboardName=${this.props.dashboardName}`)
       .then(response => response.json())
       .then(data => {
         that.setState({
@@ -56,7 +53,7 @@ class Dashboard extends Component {
   render() {
     return (
         <div className='container'>
-        <h1>{this.props.name}</h1>
+        <h1>{this.props.dashboardName}</h1>
         {this.state.dashBoardData && this.createWidgets()}
         </div>
     );
