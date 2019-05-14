@@ -33,7 +33,7 @@ class App extends Component {
       .then(data => {
         console.log(data)
         that.setState({
-          dashBoardList: data
+          dashBoardList: data.DashboardEntries
       });
         });
 
