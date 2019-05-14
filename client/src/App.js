@@ -26,7 +26,7 @@ class App extends Component {
 
   callCreateTemp = async () => {
     let that = this;
-    fetch(`http://10.133.26.118:3001/createtempCredentials`)
+    await fetch(`http://10.133.26.118:3001/createtempCredentials`)
     .then(response => response.json())
     .catch(error => {
         console.error(error)
@@ -35,10 +35,8 @@ class App extends Component {
 
 
   componentWillMount(){
-    this.interval = setInterval(() => {
-      this.callCreateTemp()
-    }, 1800000);
     const that = this;
+    this.callCreateTemp();
     fetch("http://10.133.26.118:3001/listdashboard")
       .then(response => response.json())
       .then(data => {
@@ -46,7 +44,10 @@ class App extends Component {
         that.setState({
           dashBoardList: data.DashboardEntries
       });
-        });
+    });
+    this.interval = setInterval(() => {
+      this.callCreateTemp()
+    }, 1800000);
 
       // });
     // let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
