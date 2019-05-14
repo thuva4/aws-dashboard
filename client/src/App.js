@@ -28,7 +28,7 @@ class App extends Component {
   componentWillMount(){
     console.log("Hello")
     const that = this;
-    fetch("http://10.133.26.118:3001/listdashboards")
+    fetch("http://10.133.26.118:3001/listdashboard")
       .then(response => response.json())
       .then(data => {
         console.log(data)
