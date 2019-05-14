@@ -96,7 +96,7 @@ router.post('/getwidgetImage', async function(req, res, next){
                     // res.send(data);
                     res.writeHead(200, {
                         'Content-Type': 'image/png',
-                        'Content-Length': img.length
+                        'Content-Length': data.MetricWidgetImage.length
                       });
                       res.end(data.MetricWidgetImage); 
                 }
