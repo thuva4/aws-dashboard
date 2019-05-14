@@ -78,15 +78,17 @@ router.get('/getdashboard', function(req, res, next){
 
 
 router.post('/getwidgetImage', function(req, res, next){
-    fs.readFile('./credencials.json', function(err, data){
+    console.log(hello);
+    await fs.readFile('./credencials.json', function(err, data){
         if (err) res.status(500).send(err)
         else {
             data = JSON.parse(data)
+            console.log(data);
             let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
                 data.Credentials.SecretAccessKey, 
                 data.Credentials.SessionToken)
             let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
-            cloudWatch.getMetricWidgetImage(req.body, function(err, data) {
+            await cloudWatch.getMetricWidgetImage(req.body, function(err, data) {
                 if (err) {
                   res.status(500).send(err);
                 } else {
