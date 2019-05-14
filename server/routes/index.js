@@ -93,7 +93,12 @@ router.post('/getwidgetImage', async function(req, res, next){
                   res.status(500).send(err);
                 } else {
                     console.log(data)
-                    res.send(data);
+                    // res.send(data);
+                    res.writeHead(200, {
+                        'Content-Type': 'image/png',
+                        'Content-Length': img.length
+                      });
+                      res.end(data.MetricWidgetImage); 
                 }
               } );
         }
