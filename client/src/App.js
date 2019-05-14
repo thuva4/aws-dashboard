@@ -14,7 +14,6 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = { 
-    cw: new AWS.CloudWatch({apiVersion: '2010-08-01'}),
     dashBoardList: {},
     }
   }
@@ -22,7 +21,6 @@ class App extends Component {
   setTempCredentials = (tempCredentials) => {
     this.setState({
       ...this.state,
-      cw: new AWS.CloudWatch({credentials:tempCredentials})
     })
   }
 
@@ -58,50 +56,50 @@ class App extends Component {
 
 
 
-  getWidget = (widgetDefinition, callback, tempCredentials) => {
+//   getWidget = (widgetDefinition, callback, tempCredentials) => {
     
-    let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+//     let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
 
-     cloudWatch.getMetricWidgetImage(widgetDefinition, function (err, data) {
-     if (err) console.log(err, err.stack); // an error occurred
-        else {
-            console.log(data.MetricWidgetImage);           // successful response
-            var response = {
-                statusCode: 200,
-                headers: {
-                'Content-Type' : 'image/png',
-                'Access-Control-Allow-Origin' : '*',
-                'Access-Control-Allow-Methods' : 'POST, GET, PUT, OPTIONS',
-                'Access-Control-Allow-Headers' : 'x-api-key'
-                },
-                body: new Buffer(data.MetricWidgetImage).toString('base64')
-    };
-            callback(err, response);
-        }
-    });
+//      cloudWatch.getMetricWidgetImage(widgetDefinition, function (err, data) {
+//      if (err) console.log(err, err.stack); // an error occurred
+//         else {
+//             console.log(data.MetricWidgetImage);           // successful response
+//             var response = {
+//                 statusCode: 200,
+//                 headers: {
+//                 'Content-Type' : 'image/png',
+//                 'Access-Control-Allow-Origin' : '*',
+//                 'Access-Control-Allow-Methods' : 'POST, GET, PUT, OPTIONS',
+//                 'Access-Control-Allow-Headers' : 'x-api-key'
+//                 },
+//                 body: new Buffer(data.MetricWidgetImage).toString('base64')
+//     };
+//             callback(err, response);
+//         }
+//     });
 
-}
+// }
 
-  componentWillMount(){
-    let that = this;
-    this.state.cw.getDashboard({"DashboardName": "gg"}, function(err, data) {
-      if (err) {
-        console.log("Error", err);
-      } else {
-        console.log(data.DashboardBody)
-        let dataJson = JSON.parse(data.DashboardBody)
-        that.setState({
-          dashBoardList: dataJson.widgets
-      });
-      }
-    } );
-  }
+  // componentWillMount(){
+  //   let that = this;
+  //   this.state.cw.getDashboard({"DashboardName": "gg"}, function(err, data) {
+  //     if (err) {
+  //       console.log("Error", err);
+  //     } else {
+  //       console.log(data.DashboardBody)
+  //       let dataJson = JSON.parse(data.DashboardBody)
+  //       that.setState({
+  //         dashBoardList: dataJson.widgets
+  //     });
+  //     }
+  //   } );
+  // }
 
 
 
   createdashboard = () => {
     let dashboards = []
-    console.log(WidgetDefinition)
+    // console.log(WidgetDefinition)
     console.log(this.state.dashBoardList.length)
     for (let i = 0; i < this.state.dashBoardList.length; i++) {
       // let localWidgetDefinition = _.cloneDeep(WidgetDefinition);
