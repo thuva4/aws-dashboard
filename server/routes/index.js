@@ -90,10 +90,7 @@ router.post('/getwidgetImage', function(req, res, next){
                 if (err) {
                   res.status(500).send(err);
                 } else {
-                //   let base64data = data.MetricWidgetImage.toString('base64');
-                //   that.setState({
-                //     imageStr: base64data
-                //   });
+                    console.log(data)
                     res.send(data);
                 }
               } );
