@@ -15,7 +15,19 @@ class Dashboard extends Component {
     }
     componentWillMount(){
         this.callAwsCloudWatch()
+        this.interval = setInterval(() => {
+            this.callCreateTemp()
+          }, 1800000);
     }
+
+    callCreateTemp = async () => {
+        let that = this;
+        fetch(`http://10.133.26.118:3001/createtempCredentials`)
+        .then(response => response.json())
+        .catch(error => {
+            console.error(error)
+        })
+      }
 
     callAwsCloudWatch = async () => {
       let that = this;
