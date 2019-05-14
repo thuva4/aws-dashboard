@@ -27,7 +27,10 @@ class Widget extends Component {
         body: JSON.stringify(params),
         headers: { 'Content-type': 'application/json' }
       })
-      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        response
+      })
       .then(data => {
         let base64data = data.MetricWidgetImage.toString('base64');
         console.log(base64data)
