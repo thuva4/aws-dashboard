@@ -52,6 +52,81 @@ router.get('/gettempCredentials', function(req, res, next){
             //   } );
         }
     })
-})
+});
+
+router.get('/getdashboard', function(req, res, next){
+    fs.readFile('./credencials.json', function(err, data){
+        if (err) res.status(500).send(err)
+        else {
+            data = JSON.parse(data)
+            res.send(data.Credentials)
+            let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
+                data.Credentials.SecretAccessKey, 
+                data.Credentials.SessionToken)
+            let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+            cloudWatch.getDashboard({"DashboardName": `${req.query.dashboardName}`}, function(err, data) {
+                if (err) {
+                  return res.status(500).send(err);
+                } else {
+                  console.log(data.DashboardBody)
+                  let dataJson = JSON.parse(data.DashboardBody)
+                  res.send(dataJson.widgets)
+                }
+              } );
+        }
+    })
+});
+
+
+router.post('/getwidgetImage', function(req, res, next){
+    fs.readFile('./credencials.json', function(err, data){
+        if (err) res.status(500).send(err)
+        else {
+            data = JSON.parse(data)
+            res.send(data.Credentials)
+            let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
+                data.Credentials.SecretAccessKey, 
+                data.Credentials.SessionToken)
+            let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+            cloudWatch.getMetricWidgetImage(req.body, function(err, data) {
+                if (err) {
+                  res.status(500).send(err);
+                } else {
+                //   let base64data = data.MetricWidgetImage.toString('base64');
+                //   that.setState({
+                //     imageStr: base64data
+                //   });
+                    res.send(data);
+                }
+              } );
+        }
+    })
+});
+
+router.get('/listdashboard', function(req, res, next){
+    fs.readFile('./credencials.json', function(err, data){
+        if (err) res.status(500).send(err)
+        else {
+            data = JSON.parse(data)
+            res.send(data.Credentials)
+            let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
+                data.Credentials.SecretAccessKey, 
+                data.Credentials.SessionToken)
+            let cloudWatch = tempCredentials ? new AWS.CloudWatch({credentials:tempCredentials}) : new AWS.CloudWatch();
+            cloudWatch.listDashboards({}, function(err, data) {
+                if (err) {
+                    return res.status(500).send(err);
+                } else {
+                  console.log(data.DashboardEntries)
+                  let dataJson = {
+                    DashboardEntries:data.DashboardEntries
+                  }
+                  console.log(dataJson)
+                  res.send(dataJson)
+                }
+              } );
+        }
+    })
+});
 
 module.exports = router;
