@@ -37,9 +37,11 @@ class Widget extends Component {
         headers: { 'Content-type': 'application/json' }
       })
       .then(response => {
+        console.log(response)
         response.arrayBuffer().then((buffer) => {
           var base64Flag = 'data:image/jpeg;base64,';
           var imageStr = that.arrayBufferToBase64(buffer);
+          console.log(imageStr)
           that.setState({
             imageStr: imageStr
           });
