@@ -77,9 +77,9 @@ router.get('/getdashboard', function(req, res, next){
 });
 
 
-router.post('/getwidgetImage', function(req, res, next){
+router.post('/getwidgetImage', async function(req, res, next){
     console.log(hello);
-    await fs.readFile('./credencials.json', function(err, data){
+    await fs.readFile('./credencials.json', async function(err, data){
         if (err) res.status(500).send(err)
         else {
             data = JSON.parse(data)
