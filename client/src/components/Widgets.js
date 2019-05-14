@@ -13,7 +13,7 @@ class Widget extends Component {
         
     }
     componentWillMount(){
-        this.callAwsCloudWatch()
+        await this.callAwsCloudWatch()
     }
 
 
@@ -30,6 +30,7 @@ class Widget extends Component {
       .then(response => response.json())
       .then(data => {
         let base64data = data.MetricWidgetImage.toString('base64');
+        console.log(base64data)
         that.setState({
           imageStr: base64data
         });
