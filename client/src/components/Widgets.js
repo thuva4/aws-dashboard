@@ -29,15 +29,15 @@ class Widget extends Component {
       })
       .then(response => {
         console.log(response)
-        response
+        // response
       })
-      .then(data => {
-        let base64data = data.MetricWidgetImage.toString('base64');
-        console.log(base64data)
-        that.setState({
-          imageStr: base64data
-        });
-      });
+      // .then(data => {
+      //   let base64data = data.MetricWidgetImage.toString('base64');
+      //   console.log(base64data)
+      //   that.setState({
+      //     imageStr: base64data
+      //   });
+      // });
     }
 
     componentDidMount(){
