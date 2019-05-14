@@ -59,7 +59,6 @@ router.get('/getdashboard', function(req, res, next){
         if (err) res.status(500).send(err)
         else {
             data = JSON.parse(data)
-            res.send(data.Credentials)
             let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
                 data.Credentials.SecretAccessKey, 
                 data.Credentials.SessionToken)
@@ -83,7 +82,6 @@ router.post('/getwidgetImage', function(req, res, next){
         if (err) res.status(500).send(err)
         else {
             data = JSON.parse(data)
-            res.send(data.Credentials)
             let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
                 data.Credentials.SecretAccessKey, 
                 data.Credentials.SessionToken)
@@ -108,7 +106,6 @@ router.get('/listdashboard', function(req, res, next){
         if (err) res.status(500).send(err)
         else {
             data = JSON.parse(data)
-            res.send(data.Credentials)
             let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
                 data.Credentials.SecretAccessKey, 
                 data.Credentials.SessionToken)
