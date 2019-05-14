@@ -16,27 +16,30 @@ class Widget extends Component {
         this.callAwsCloudWatch()
     }
 
+
     callAwsCloudWatch = async () => {
       let params =_.cloneDeep(this.props.params);
       let MetricWidget = JSON.stringify(this.props.params.MetricWidget);
       params.MetricWidget = MetricWidget;
       let that = this;
-        await this.props.cw.getMetricWidgetImage(params, function(err, data) {
-            if (err) {
-              console.log("Error", err);
-            } else {
-              let base64data = data.MetricWidgetImage.toString('base64');
-              that.setState({
-                imageStr: base64data
-              });
-            }
-          } );
+      await fetch('http://10.133.26.118:3001/getwidgetImage', {
+        method: 'post',
+        body: JSON.stringify(params),
+        headers: { 'Content-type': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        let base64data = data.MetricWidgetImage.toString('base64');
+        that.setState({
+          imageStr: base64data
+        });
+      });
     }
 
     componentDidMount(){
       this.interval = setInterval(() => {
         this.callAwsCloudWatch()
-      }, 5000);
+      }, 1000);
     }
 
     componentWillUnmount() {

@@ -5,7 +5,8 @@ import AWS from 'aws-sdk';
 import WidgetDefinition from './components/WidgetDefinition'
 import * as _ from 'lodash';
 
-import Widget from './components/widgets';
+import Widget from './components/Widgets';
+import Dashboard from './components/Dashboard';
 
 AWS.config.update(AWS_CONFIG); 
 
@@ -14,7 +15,7 @@ class App extends Component {
     super(props);
     this.state = { 
     cw: new AWS.CloudWatch({apiVersion: '2010-08-01'}),
-    dashBoardData: {}
+    dashBoardList: {},
     }
   }
 
@@ -27,27 +28,14 @@ class App extends Component {
 
 
   componentWillMount(){
-    // console.log("Hello")
-    // fetch("http://169.254.169.254/latest/meta-data/iam/info")
-    //   .then(response => {
-    //     console.log(response)
-    //     response.json()})
-    //   .then(data => {
-    //     console.log(data)
-    //     this.setState({ InstanceProfileArn: data.InstanceProfileArn, isLoading: false })
-        let roleArn = `arn:aws:iam::315465781430:instance-profile/Application-CDE-MSD-DevOps-Role`;
-        console.log("Assuming role: "+roleArn);
-
-        let sts = new AWS.STS() ;
-        sts.assumeRole({RoleArn: roleArn, RoleSessionName: 'SnapshotGraphs'}, function(err, data) {
-            if (err) console.log(err, err.stack); // an error occurred
-            else {           // successful response
-                console.log(JSON.stringify(data))
-                let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
-                                                          data.Credentials.SecretAccessKey, 
-                                                          data.Credentials.SessionToken)
-                this.setTempCredentials(tempCredentials);
-            }
+    console.log("Hello")
+    fetch("http://10.133.26.118:3001/listdashboards")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        that.setState({
+          dashBoardList: data
+      });
         });
 
       // });
@@ -94,37 +82,36 @@ class App extends Component {
 
 }
 
-  // componentWillMount(){
-  //   let that = this;
-  //   this.state.cw.getDashboard({"DashboardName": "gg"}, function(err, data) {
-  //     if (err) {
-  //       console.log("Error", err);
-  //     } else {
-  //       console.log(data.DashboardBody)
-  //       let dataJson = JSON.parse(data.DashboardBody)
-  //       that.setState({
-  //         dashBoardData: dataJson.widgets
-  //     });
-  //     }
-  //   } );
-  // }
-
-
-
-  createWidgets = () => {
-    let widgets = []
-    console.log(WidgetDefinition)
-    console.log(this.state.dashBoardData.length)
-    for (let i = 0; i < this.state.dashBoardData.length; i++) {
-      let localWidgetDefinition = _.cloneDeep(WidgetDefinition);
-      localWidgetDefinition.MetricWidget["metrics"] = this.state.dashBoardData[i].properties.metrics
-      if(this.state.dashBoardData[i].properties.title){
-        localWidgetDefinition.MetricWidget["title"] = this.state.dashBoardData[i].properties.title
+  componentWillMount(){
+    let that = this;
+    this.state.cw.getDashboard({"DashboardName": "gg"}, function(err, data) {
+      if (err) {
+        console.log("Error", err);
+      } else {
+        console.log(data.DashboardBody)
+        let dataJson = JSON.parse(data.DashboardBody)
+        that.setState({
+          dashBoardList: dataJson.widgets
+      });
       }
-      // console.log(localWidgetDefinition)
-      widgets.push(
+    } );
+  }
 
-          <Widget key={i} cw={this.state.cw} params={localWidgetDefinition}></Widget>
+
+
+  createdashboard = () => {
+    let dashboards = []
+    console.log(WidgetDefinition)
+    console.log(this.state.dashBoardList.length)
+    for (let i = 0; i < this.state.dashBoardList.length; i++) {
+      // let localWidgetDefinition = _.cloneDeep(WidgetDefinition);
+      // localWidgetDefinition.MetricWidget["metrics"] = this.state.dashBoardData[i].properties.metrics
+      // if(this.state.dashBoardData[i].properties.title){
+      //   localWidgetDefinition.MetricWidget["title"] = this.state.dashBoardData[i].properties.title
+      // }
+      dashboards.push(
+
+          <Dashboard key={i} dashboardName={this.state.dashBoardList[i].DashboardName}></Dashboard>
       )
     }
     return widgets;
@@ -132,9 +119,9 @@ class App extends Component {
   
   render() {
     return (
-      <>
-      {this.state.dashBoardData && this.createWidgets()}
-      </>
+      <div>
+      {this.state.dashBoardList && this.createdashboard()}
+      </div>
     );
   }
 }
