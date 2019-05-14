@@ -137,36 +137,45 @@ class App extends Component {
         dashBoardList
       }
     } = this;
-    return (
-      <div>
-        <div className="tabs">
-        <ol className="tab-list">
-          {dashBoardList.map((dashboard) => {
-            const { DashboardName } = dashboard;
-
-            return (
-              <Tab
-                activeTab={activeTab}
-                key={DashboardName}
-                label={DashboardName}
-                onClick={onClickTabItem}
-              />
-            );
-          })}
-        </ol>
-        <div className="tab-content">
-          {dashBoardList.map((dashboard) => {
-            if (dashboard.DashboardName !== activeTab) {
-              return undefined;
-            }
-            else {
-            return <Dashboard key={activeTab} dashboardName={activeTab}></Dashboard>
-            }
-          })}
+    if (dashBoardList) {
+      return (
+        <div>
+          <div className="tabs">
+          <ol className="tab-list">
+            {dashBoardList.map((dashboard) => {
+              const { DashboardName } = dashboard;
+  
+              return (
+                <Tab
+                  activeTab={activeTab}
+                  key={DashboardName}
+                  label={DashboardName}
+                  onClick={onClickTabItem}
+                />
+              );
+            })}
+          </ol>
+          <div className="tab-content">
+            {dashBoardList.map((dashboard) => {
+              if (dashboard.DashboardName !== activeTab) {
+                return undefined;
+              }
+              else {
+              return (<Dashboard key={activeTab} dashboardName={activeTab}></Dashboard>);
+              }
+            })}
+          </div>
         </div>
-      </div>
-      </div>
-    );
+        </div>
+      );
+    } else {
+      return(
+        <div>
+          Loading
+        </div>
+      )
+    }
+    
   }
 }
 
