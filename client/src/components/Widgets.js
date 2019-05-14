@@ -39,7 +39,7 @@ class Widget extends Component {
     componentDidMount(){
       this.interval = setInterval(() => {
         this.callAwsCloudWatch()
-      }, 1000);
+      }, 10000);
     }
 
     componentWillUnmount() {
