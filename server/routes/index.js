@@ -90,8 +90,8 @@ router.post('/getwidgetImage', async function(req, res, next){
                 if (err) {
                   res.status(500).send(err);
                 } else {
-                    console.log(data)
-                    res.send(data);
+                    // console.log(data)
+                    res.send(data.MetricWidgetImage);
                     // res.writeHead(200, {
                     //     'Content-Type': 'image/png',
                     //     'Content-Length': data.MetricWidgetImage.length
