@@ -78,12 +78,10 @@ router.get('/getdashboard', function(req, res, next){
 
 
 router.post('/getwidgetImage', async function(req, res, next){
-    console.log("hello");
     await fs.readFile('./credencials.json', async function(err, data){
         if (err) res.status(500).send(err)
         else {
             data = JSON.parse(data)
-            console.log(data);
             let tempCredentials = new AWS.Credentials(data.Credentials.AccessKeyId, 
                 data.Credentials.SecretAccessKey, 
                 data.Credentials.SessionToken)
@@ -93,12 +91,12 @@ router.post('/getwidgetImage', async function(req, res, next){
                   res.status(500).send(err);
                 } else {
                     console.log(data)
-                    // res.send(data);
-                    res.writeHead(200, {
-                        'Content-Type': 'image/png',
-                        'Content-Length': data.MetricWidgetImage.length
-                      });
-                      res.end(data.MetricWidgetImage); 
+                    res.send(data);
+                    // res.writeHead(200, {
+                    //     'Content-Type': 'image/png',
+                    //     'Content-Length': data.MetricWidgetImage.length
+                    //   });
+                    // res.end(data.MetricWidgetImage); 
                 }
               } );
         }
