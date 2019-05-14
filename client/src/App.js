@@ -134,6 +134,7 @@ class App extends Component {
       onClickTabItem,
       state: {
         activeTab,
+        dashBoardList
       }
     } = this;
     return (
@@ -155,14 +156,18 @@ class App extends Component {
         </ol>
         <div className="tab-content">
           {dashBoardList.map((dashboard) => {
-            if (dashboard.DashboardName !== activeTab) return undefined;
+            if (dashboard.DashboardName !== activeTab) {
+              return undefined;
+            }
+            else {
             return 
             (
             <Dashboard 
-              key={i} 
-              dashboardName={this.state.dashBoardList[i].DashboardName} 
-              vissible={this.state.dashBoardVissible[i]}>
+              key={activeTab}
+              dashboardName={activeTab}
+              >
             </Dashboard>)
+            }
           })}
         </div>
       </div>
