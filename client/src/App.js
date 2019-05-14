@@ -4,6 +4,7 @@ import AWS_CONFIG from './env'
 import AWS from 'aws-sdk';
 import WidgetDefinition from './components/WidgetDefinition'
 import * as _ from 'lodash';
+import Tab from './components/Tab'
 
 import Widget from './components/Widgets';
 import Dashboard from './components/Dashboard';
@@ -15,6 +16,7 @@ class App extends Component {
     super(props);
     this.state = { 
     dashBoardList: {},
+    
     }
   }
 
@@ -42,7 +44,8 @@ class App extends Component {
       .then(data => {
         console.log(data)
         that.setState({
-          dashBoardList: data.DashboardEntries
+          dashBoardList: data.DashboardEntries,
+          activeTab: data.DashboardEntries[0].DashboardName
       });
     });
     this.interval = setInterval(() => {
@@ -108,30 +111,61 @@ class App extends Component {
   //   } );
   // }
 
+  onClickTabItem = (tab) => {
+    this.setState({ activeTab: tab });
+  }
 
 
   createdashboard = () => {
     let dashboards = []
+
     // console.log(WidgetDefinition)
     console.log(this.state.dashBoardList.length)
     for (let i = 0; i < this.state.dashBoardList.length; i++) {
-      // let localWidgetDefinition = _.cloneDeep(WidgetDefinition);
-      // localWidgetDefinition.MetricWidget["metrics"] = this.state.dashBoardData[i].properties.metrics
-      // if(this.state.dashBoardData[i].properties.title){
-      //   localWidgetDefinition.MetricWidget["title"] = this.state.dashBoardData[i].properties.title
-      // }
       dashboards.push(
-
-          <Dashboard key={i} dashboardName={this.state.dashBoardList[i].DashboardName}></Dashboard>
+          <Dashboard key={i} dashboardName={this.state.dashBoardList[i].DashboardName} vissible={this.state.dashBoardVissible[i]}></Dashboard>
       )
     }
     return dashboards;
   }
   
   render() {
+    const {
+      onClickTabItem,
+      state: {
+        activeTab,
+      }
+    } = this;
     return (
       <div>
-      {this.state.dashBoardList && this.createdashboard()}
+        <div className="tabs">
+        <ol className="tab-list">
+          {dashBoardList.map((dashboard) => {
+            const { DashboardName } = dashboard;
+
+            return (
+              <Tab
+                activeTab={activeTab}
+                key={DashboardName}
+                label={DashboardName}
+                onClick={onClickTabItem}
+              />
+            );
+          })}
+        </ol>
+        <div className="tab-content">
+          {dashBoardList.map((dashboard) => {
+            if (dashboard.DashboardName !== activeTab) return undefined;
+            return 
+            (
+            <Dashboard 
+              key={i} 
+              dashboardName={this.state.dashBoardList[i].DashboardName} 
+              vissible={this.state.dashBoardVissible[i]}>
+            </Dashboard>)
+          })}
+        </div>
+      </div>
       </div>
     );
   }
