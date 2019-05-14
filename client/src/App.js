@@ -27,6 +27,7 @@ class App extends Component {
 
   componentWillMount(){
     console.log("Hello")
+    const that = this;
     fetch("http://10.133.26.118:3001/listdashboards")
       .then(response => response.json())
       .then(data => {
@@ -112,7 +113,7 @@ class App extends Component {
           <Dashboard key={i} dashboardName={this.state.dashBoardList[i].DashboardName}></Dashboard>
       )
     }
-    return widgets;
+    return dashboards;
   }
   
   render() {
