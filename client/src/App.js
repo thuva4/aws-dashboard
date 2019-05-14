@@ -38,8 +38,8 @@ class App extends Component {
 
   componentWillMount(){
     const that = this;
-    await this.callCreateTemp();
-    await fetch("http://10.133.26.118:3001/listdashboard")
+    this.callCreateTemp();
+     fetch("http://10.133.26.118:3001/listdashboard")
       .then(response => response.json())
       .then(data => {
         console.log(data)
