@@ -160,13 +160,7 @@ class App extends Component {
               return undefined;
             }
             else {
-            return 
-            (
-            <Dashboard 
-              key={activeTab}
-              dashboardName={activeTab}
-              >
-            </Dashboard>)
+            return <Dashboard key={activeTab} dashboardName={activeTab}></Dashboard>
             }
           })}
         </div>
