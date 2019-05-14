@@ -28,15 +28,22 @@ class Widget extends Component {
         headers: { 'Content-type': 'application/json' }
       })
       .then(response => {
-        console.log(response)
+        response.arrayBuffer().then((buffer) => {
+          var base64Flag = 'data:image/jpeg;base64,';
+          var imageStr = arrayBufferToBase64(buffer);
+          that.setState({
+            imageStr: imageStr
+          });
         // response
-      })
+        })
+      }
+      );
       // .then(data => {
       //   let base64data = data.MetricWidgetImage.toString('base64');
       //   console.log(base64data)
-      //   that.setState({
-      //     imageStr: base64data
-      //   });
+        // that.setState({
+        //   imageStr: base64data
+        // });
       // });
     }
 
