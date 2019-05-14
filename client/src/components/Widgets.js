@@ -15,7 +15,7 @@ class Widget extends Component {
     componentWillMount(){
         this.callAwsCloudWatch()
     }
-    
+
     arrayBufferToBase64(buffer) {
       var binary = '';
       var bytes = [].slice.call(new Uint8Array(buffer));
@@ -39,7 +39,7 @@ class Widget extends Component {
       .then(response => {
         response.arrayBuffer().then((buffer) => {
           var base64Flag = 'data:image/jpeg;base64,';
-          var imageStr = arrayBufferToBase64(buffer);
+          var imageStr = that.arrayBufferToBase64(buffer);
           that.setState({
             imageStr: imageStr
           });
